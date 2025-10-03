@@ -1,0 +1,5 @@
+{
+  "name": "Kitchen Fryer Timer",
+  "description": "A kitchen management application to time multiple fryers with pre-set menu items, track cooking progress with color-coded statuses, and log all cooking activities.",
+  "requestFramePermissions": []
+}
