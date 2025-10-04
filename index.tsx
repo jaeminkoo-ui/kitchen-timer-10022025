@@ -1,9 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
-// i18n 설정 파일을 불러와 앱 전체에 적용합니다.
-import './i18n.config';
-
 import App from './App';
 import { LanguageProvider } from './contexts/LanguageContext';
 

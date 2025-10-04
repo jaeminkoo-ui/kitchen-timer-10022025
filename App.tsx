@@ -8,14 +8,11 @@ import HistoryModal from './components/HistoryModal';
 import EditCategoryModal from './components/EditCategoryModal';
 import LanguageSelector from './components/LanguageSelector';
 import XIcon from './components/icons/XIcon';
+import LoginScreen from './components/LoginScreen';
 import { useLanguage } from './contexts/LanguageContext';
 
-// --- 추가된 부분 1: SignUp, Login 컴포넌트 불러오기 ---
-import SignUp from './components/SignUp';
-import Login from './components/Login';
-// ----------------------------------------------------
-
 const App: React.FC = () => {
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [fryers, setFryers] = useState<Fryer[]>(
     Array.from({ length: 6 }, (_, i) => ({
       id: i + 1,
@@ -34,6 +31,7 @@ const App: React.FC = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isEditCategoryModalOpen, setIsEditCategoryModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const [draggedItemInfo, setDraggedItemInfo] = useState<{ item: MenuItem; categoryId: string } | null>(null);
 
@@ -43,6 +41,27 @@ const App: React.FC = () => {
   useEffect(() => {
     alarmSound.current = new Audio('https://cdn.freesound.org/previews/249/249589_4198850-lq.mp3');
   }, []);
+
+  // Check for logged in user on mount
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('KITCHEN_TIMER_LOGGED_IN_USER');
+    if (loggedInUser) {
+        const userData = localStorage.getItem(`KITCHEN_TIMER_USER_DATA_${loggedInUser}`);
+        if (userData) {
+            setCategories(JSON.parse(userData));
+        } else {
+            setCategories(INITIAL_CATEGORIES);
+        }
+        setCurrentUser(loggedInUser);
+    }
+  }, []);
+
+  // Save categories to localStorage whenever they change for the current user
+  useEffect(() => {
+    if (currentUser) {
+        localStorage.setItem(`KITCHEN_TIMER_USER_DATA_${currentUser}`, JSON.stringify(categories));
+    }
+  }, [categories, currentUser]);
   
   const speak = useCallback((text: string) => {
     if ('speechSynthesis' in window) {
@@ -89,6 +108,46 @@ const App: React.FC = () => {
 
     return () => clearInterval(timerId);
   }, [t, speak]);
+
+  const handleLogin = (email: string, password: string) => {
+    setAuthError(null);
+    const users = JSON.parse(localStorage.getItem('KITCHEN_TIMER_USERS') || '{}');
+    if (users[email] && users[email] === password) {
+      const userData = localStorage.getItem(`KITCHEN_TIMER_USER_DATA_${email}`);
+      if (userData) {
+          setCategories(JSON.parse(userData));
+      } else {
+          setCategories(INITIAL_CATEGORIES);
+          localStorage.setItem(`KITCHEN_TIMER_USER_DATA_${email}`, JSON.stringify(INITIAL_CATEGORIES));
+      }
+      setCurrentUser(email);
+      localStorage.setItem('KITCHEN_TIMER_LOGGED_IN_USER', email);
+    } else {
+      setAuthError(t('invalidCredentials'));
+    }
+  };
+
+  const handleSignUp = (email: string, password: string) => {
+    setAuthError(null);
+    const users = JSON.parse(localStorage.getItem('KITCHEN_TIMER_USERS') || '{}');
+    if (users[email]) {
+        setAuthError(t('emailAlreadyExists'));
+    } else {
+        users[email] = password; // In a real app, hash this password
+        localStorage.setItem('KITCHEN_TIMER_USERS', JSON.stringify(users));
+        
+        // Create initial data for the new user
+        localStorage.setItem(`KITCHEN_TIMER_USER_DATA_${email}`, JSON.stringify(INITIAL_CATEGORIES));
+        
+        // Automatically log in after successful sign-up
+        handleLogin(email, password);
+    }
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('KITCHEN_TIMER_LOGGED_IN_USER');
+  };
 
   const handleMenuItemSelect = (item: MenuItem, category: Category) => {
     const allFryersBusy = fryers.every(f => f.status !== FryerStatus.READY);
@@ -231,18 +290,12 @@ const App: React.FC = () => {
     setDraggedItemInfo(null);
   };
 
+  if (!currentUser) {
+    return <LoginScreen onLogin={handleLogin} onSignUp={handleSignUp} authError={authError} />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 p-4 sm:p-6 lg:p-8 font-sans">
-      
-      {/* --- 추가된 부분 2: SignUp, Login 컴포넌트 배치 --- */}
-      <div className="max-w-xl mx-auto mb-8 p-4 bg-gray-800 rounded-lg text-white grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SignUp />
-        <Login />
-      </div>
-      <hr className="border-gray-700 mb-8" />
-      {/* ---------------------------------------------------- */}
-
       {isMenuModalOpen && menuModalContext && (
         <MenuModal
           context={{...menuModalContext, categoryName: menuModalContext.category.name}}
@@ -271,6 +324,12 @@ const App: React.FC = () => {
             className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition-colors"
           >
             {t('history')}
+          </button>
+           <button 
+            onClick={handleLogout}
+            className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+          >
+            {t('logout')}
           </button>
         </div>
       </header>

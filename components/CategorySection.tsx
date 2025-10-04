@@ -56,6 +56,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
             onClick={() => onMenuItemSelect(item, category)}
             onEdit={() => onEditMenuItem(item)}
             onDragStart={() => onDragStart(item, category.id)}
+            cookTime={item.cookTime}
             data-item-id={item.id}
           >
             {item.name}

@@ -26,15 +26,20 @@ export const translations = {
     save: 'Save',
     allFryersBusy: 'Please wait, all fryers are currently in use.',
     fryerDoneMessage: 'Fryer {fryerId} is done. Please remove the basket.',
-    // --- Sign Up Translations Added Below ---
-    signUp: {
-      title: "Sign Up",
-      emailPlaceholder: "Email",
-      passwordPlaceholder: "Password",
-      button: "Sign Up",
-      successAlert: "Sign-up successful!",
-      errorAlert: "An error occurred during sign-up."
-    }
+    login: 'Login',
+    logout: 'Logout',
+    email: 'Email',
+    password: 'Password',
+    loginToAccount: 'Login to your account',
+    loginDemoMessage: 'For demo: any email/password will work.',
+    signUp: 'Sign Up',
+    createAccount: 'Create your account',
+    confirmPassword: 'Confirm Password',
+    passwordsDoNotMatch: 'Passwords do not match.',
+    emailAlreadyExists: 'An account with this email already exists.',
+    invalidCredentials: 'Invalid email or password.',
+    dontHaveAccount: "Don't have an account?",
+    alreadyHaveAccount: 'Already have an account?',
   },
   es: {
     fryerDashboard: 'Tablero de Freidoras',
@@ -63,15 +68,20 @@ export const translations = {
     save: 'Guardar',
     allFryersBusy: 'Por favor espere, todas las freidoras están en uso.',
     fryerDoneMessage: 'La freidora {fryerId} ha terminado. Por favor, retire la cesta.',
-    // --- Sign Up Translations Added Below ---
-    signUp: {
-      title: "Registrarse",
-      emailPlaceholder: "Correo Electrónico",
-      passwordPlaceholder: "Contraseña",
-      button: "Registrarse",
-      successAlert: "¡Registro exitoso!",
-      errorAlert: "Ocurrió un error durante el registro."
-    }
+    login: 'Iniciar Sesión',
+    logout: 'Cerrar Sesión',
+    email: 'Correo Electrónico',
+    password: 'Contraseña',
+    loginToAccount: 'Inicia sesión en tu cuenta',
+    loginDemoMessage: 'Para demo: cualquier email/contraseña funcionará.',
+    signUp: 'Registrarse',
+    createAccount: 'Crea tu cuenta',
+    confirmPassword: 'Confirmar Contraseña',
+    passwordsDoNotMatch: 'Las contraseñas no coinciden.',
+    emailAlreadyExists: 'Ya existe una cuenta con este correo electrónico.',
+    invalidCredentials: 'Correo electrónico o contraseña no válidos.',
+    dontHaveAccount: '¿No tienes una cuenta?',
+    alreadyHaveAccount: '¿Ya tienes una cuenta?',
   },
   ko: {
     fryerDashboard: '튀김기 대시보드',
@@ -100,15 +110,20 @@ export const translations = {
     save: '저장',
     allFryersBusy: '잠시만 기다려 주세요, 모든 프라이어가 사용중 입니다.',
     fryerDoneMessage: '프라이어 {fryerId} 의 조리가 완료되었습니다. 바스켓을 제거해 주세요.',
-    // --- Sign Up Translations Added Below ---
-    signUp: {
-      title: "회원가입",
-      emailPlaceholder: "이메일",
-      passwordPlaceholder: "비밀번호",
-      button: "가입하기",
-      successAlert: "회원가입에 성공했습니다!",
-      errorAlert: "회원가입 중 에러가 발생했습니다."
-    }
+    login: '로그인',
+    logout: '로그아웃',
+    email: '이메일',
+    password: '비밀번호',
+    loginToAccount: '계정에 로그인하세요',
+    loginDemoMessage: '데모용: 아무 이메일/비밀번호나 사용 가능합니다.',
+    signUp: '회원가입',
+    createAccount: '계정 만들기',
+    confirmPassword: '비밀번호 확인',
+    passwordsDoNotMatch: '비밀번호가 일치하지 않습니다.',
+    emailAlreadyExists: '이 이메일로 된 계정이 이미 존재합니다.',
+    invalidCredentials: '잘못된 이메일 또는 비밀번호입니다.',
+    dontHaveAccount: '계정이 없으신가요?',
+    alreadyHaveAccount: '이미 계정이 있으신가요?',
   },
 };
 

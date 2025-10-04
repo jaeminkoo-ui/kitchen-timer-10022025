@@ -5,13 +5,20 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 interface MenuItemButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
+  cookTime: number;
   onClick: () => void;
   onEdit: () => void;
   onDragStart: () => void;
   isBeingDragged?: boolean;
 }
 
-const MenuItemButton: React.FC<MenuItemButtonProps> = ({ children, onClick, onEdit, onDragStart, isBeingDragged, ...divProps }) => {
+const formatTime = (seconds: number): string => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `(${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')})`;
+};
+
+const MenuItemButton: React.FC<MenuItemButtonProps> = ({ children, cookTime, onClick, onEdit, onDragStart, isBeingDragged, ...divProps }) => {
   const [showEditOverlay, setShowEditOverlay] = useState(false);
   const { t } = useLanguage();
 
@@ -48,9 +55,10 @@ const MenuItemButton: React.FC<MenuItemButtonProps> = ({ children, onClick, onEd
       <button
         onClick={handleClick}
         {...longPressProps}
-        className="w-full h-full p-2 flex justify-center items-center text-center bg-gray-800 border-2 border-gray-600 rounded-2xl text-white font-semibold cursor-grab active:cursor-grabbing hover:bg-gray-700 hover:border-blue-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full h-full p-2 flex flex-col justify-center items-center text-center bg-gray-800 border-2 border-gray-600 rounded-2xl text-white font-semibold cursor-grab active:cursor-grabbing hover:bg-gray-700 hover:border-blue-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        {children}
+        <span>{children}</span>
+        <span className="text-sm text-gray-400 mt-1 font-normal">{formatTime(cookTime)}</span>
       </button>
       {showEditOverlay && (
         <div className="absolute inset-0 bg-black bg-opacity-70 rounded-2xl flex flex-col justify-center items-center space-y-2 z-10">
